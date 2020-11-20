@@ -10,12 +10,14 @@
 		background: #ffb6b6;
 	}
 
-	.success {
+	.safe {
 		color: #01c76c !important;
+		font: 15px/18px "Microsoft Yahei" !important;
 	}
 
-	.error {
+	.warning {
 		color: #e1504a !important;
+		font: 15px/18px "Microsoft Yahei" !important;
 	}
 
 	.onebox {
@@ -36,7 +38,13 @@
 	.top .build_url_info {
 		float: right;
 		margin-left: 15px;
-		font: 14px/20px "Microsoft Yahei";
+		font: 15px/20px "Microsoft Yahei";
+	}
+
+	.top .build_time {
+		margin: 0 0 0 30px;
+		color: #8b8b8b;
+		font: 13px/18px \5b8b\4f53;
 	}
 
 	.total {
@@ -78,7 +86,7 @@
 
 	.box caption {
 		margin: 0;
-		padding: 6px;
+		padding: 12px;
 		border: 1px solid #bdc4ca;
 		border-bottom: 0;
 	}
@@ -86,29 +94,30 @@
 	.box caption p {
 		margin: 0;
 		color: #383d49;
-		font: 15px/18px "Microsoft Yahei";
+		font: 18px/20px "Microsoft Yahei";
 		font-weight: bold;
 		padding-left: 20px;
 	}
 
 	.box td {
 		padding: 8px;
-		border: 0;
+		border-right: 1px solid #bdc4ca;
 		border-bottom: 1px solid #bdc4ca;
 		word-break: break-all;
 		word-wrap: break-word;
 	}
 
-	.box th p,
 	.box td p {
 		margin: 0;
 		color: #383d49;
-		font: 12px/18px "Microsoft Yahei";
+		font: 14px/18px "Microsoft Yahei";
 	}
 
 	.box th p {
 		color: #333;
 		font-weight: bold;
+		font: 16px/18px "Microsoft Yahei";
+		margin: 6px;
 	}
 
 	.box th {
@@ -120,13 +129,11 @@
 	}
 
 	.box td.sdk_name {
-		background: #fff;
 		border-right: 1px solid #bdc4ca;
 	}
 
 	.box td.sdk_name p {
 		font-weight: bold;
-		background: #fff;
 		font: bold 16px/18px "Microsoft Yahei";
 	}
 
@@ -137,13 +144,12 @@
 
 <div class="onebox" style="width: 960px; margin: auto;">
 	<div class="top">
-		<h1>COS SDK 统一自动测试  #${buildNumber}  ${buildRegion}</h1>
-		<a class="build_url_info" href="${buildUrl}">pipeline blue地址</a>
-		<a class="build_url_info" href="${buildConsoleUrl}">pipeline console地址</a>
-		<p style="margin: 0 0 0 30px; color: #8b8b8b; font: 12px/18px \5b8b\4f53;">自动测试完成时间：${testTime}</p>
+		<h1>COS SDK 统一自动测试  #${buildNumber} </h1>
+		<a class="build_url_info" href="${buildConsoleUrl}">pipeline 地址</a>
+		<p class="build_time">自动测试完成时间：${testTime}</p>
 	</div>
 
-	<table class="total" cellpadding="0" cellspacing="0">
+	<!-- <table class="total" cellpadding="0" cellspacing="0">
 		<tr>
 			<td>
 				<p class="total_name">总测试用例数</p>
@@ -159,137 +165,145 @@
 			</td>
 
 		</tr>
-	</table>
+	</table> -->
 
 	<table class="box" cellpadding="0" cellspacing="0">
 		<caption>
-			<p>用例统计明细</p>
+			<p>单元测试</p>
 		</caption>
 		<thead>
 			<tr>
 				<th>
-					<p>SDK名称</p>
+					<p>SDK</p>
 				</th>
 				<th>
-					<p>SDK版本号</p>
+					<p>版本</p>
 				</th>
 				<th>
 					<p>用例数</p>
 				</th>
 				<th>
-					<p class="failure">failure数</p>
+					<p>failure数</p>
 				</th>
 				<th>
-					<p class="error">error数</p>
+					<p>error数</p>
 				</th>
 				<th>
 					<p>跳过数</p>
 				</th>
 				<th>
-					<p>耗时</p>
+					<p>通过率</p>
 				</th>
 				<th>
-					<p>下载 XML</p>
+					<p>任务地址</p>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
-			<#list detailInfo?keys as key>
-				<#list detailInfo[key] as versionItem>
+			<#list utSummary as key, utItem>
 					<!--<tr class="bg_success">-->
 					<!--<tr class="bg_error">-->
-					<tr class="bg_${versionItem.state}">
-						<#if (versionItem_index==0)>
-							<td class="sdk_name" rowspan="${detailInfo[key]?size}">
-								<p>${key}</p>
-							</td>
-						</#if>
-						<td>
-							<p>${versionItem.version}</p>
+					<tr>
+						<td class="sdk_name">
+							<p>${key}</p>
 						</td>
 						<td>
-							<p>${versionItem.tests}</p>
+							<p>${utItem.version}</p>
 						</td>
 						<td>
-							<p class="failure">${versionItem.failures}</p>
+							<p>${utItem.tests}</p>
 						</td>
 						<td>
-							<p class="error">${versionItem.errors}</p>
+							<p>${utItem.failures}</p>
 						</td>
 						<td>
-							<p>${versionItem.skipped}</p>
+							<p>${utItem.errors}</p>
 						</td>
 						<td>
-							<p>${versionItem.time}</p>
+							<p>${utItem.skipped}</p>
+						</td>
+						<td>
+							<#if (utItem.successRate?starts_with("100"))>
+							<p class="safe">
+							<#else>
+							<p class="warning">
+							</#if>
+							${utItem.successRate}</p>
 						</td>
 						<td>
 							<p>
-								<a href="${versionItem.xmlLink}">下载 XML</a>
+								<a href="${utItem.consoleUrl}">查看日志</a>
 							</p>
 						</td>
 					</tr>
 				</#list>
-			</#list>
 		</tbody>
 	</table>
 
-	<table class="box detail" cellpadding="0" cellspacing="0">
+	<table class="box" cellpadding="0" cellspacing="0">
 		<caption>
-			<p>失败用例明细</p>
+			<p>代码覆盖率</p>
 		</caption>
 		<thead>
 			<tr>
 				<th>
-					<p>SDK名称</p>
+					<p>SDK</p>
 				</th>
 				<th>
-					<p>SDK版本号</p>
+					<p>行数覆盖率</p>
 				</th>
 				<th>
-					<p>用例名称</p>
+					<p>分支覆盖率</p>
 				</th>
 				<th>
-					<p>失败类型</p>
+					<p>方法覆盖率</p>
+				</th>
+				<th>
+					<p>报告地址</p>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
-
-			<#list detailInfo?keys as key>
-				<#list detailInfo[key] as versionItem>
-					<#list versionItem.errorFailureCaseList as failureErrorItem>
-						<#if (versionItem_index == 0 && failureErrorItem_index == 0 && key_index > 0)>
-							<tr>
-								<td>
-									<p></p>
-								</td>
-								<td>
-									<p></p>
-								</td>
-								<td>
-									<p></p>
-								</td>
-								<td>
-									<p></p>
-								</td>
-							</tr>
-						</#if>
-						<tr>
-							<td>
-								<p>${key}</p>
-							</td>
-							<td>
-								<p>${versionItem.version}</p>
-							</td>
-							<td>
-								<p>${failureErrorItem.caseName}</p>
-							</td>
-							<td>
-								<p>${failureErrorItem.type}</p>
-							</td>
-						</tr>
-					</#list>
-				</#list>
+			<#list codeCoverage as key, coverage>
+			<td class="sdk_name">
+				<p>${key}</p>
+			</td>
+			<td>
+				<#if (coverage.lineRateNumerical >= 0.8)>
+					<p class="safe">
+					<#elseif (coverage.lineRateNumerical > 0)>
+					<p class="warning">
+					<#else>
+					<p>
+				</#if>
+				${coverage.lineRate}</p>
+			</td>
+			<td>
+				<#if (coverage.branchRateNumerical >= 0.8)>
+					<p class="safe">
+					<#elseif (coverage.branchRateNumerical > 0)>
+					<p class="warning">
+					<#else>
+					<p>
+				</#if>
+				${coverage.branchRate}</p>
+			</td>
+			<td>
+				<#if (coverage.methodRateNumerical >= 0.8)>
+					<p class="safe">
+					<#elseif (coverage.methodRateNumerical > 0)>
+					<p class="warning">
+					<#else>
+					<p>
+				</#if>
+				${coverage.methodRate}</p>
+			</td>
+			<td>
+				<p>
+					<a href="${coverage.consoleUrl}">下载报告</a>
+				</p>
+			</td>
+			</tr>
 			</#list>
 		</tbody>
 	</table>

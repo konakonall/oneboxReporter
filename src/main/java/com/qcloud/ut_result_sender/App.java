@@ -1,7 +1,11 @@
 package com.qcloud.ut_result_sender;
 
-import com.qcloud.ut_result_sender.ut_result_backup.BackUpInstance;
-import com.qcloud.ut_result_sender.ut_result_parse.TaskExecutor;
+import com.qcloud.ut_result_sender.ut_result_parse.Reporter;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Hello world!
@@ -9,22 +13,34 @@ import com.qcloud.ut_result_sender.ut_result_parse.TaskExecutor;
  */
 public class App {
     public static void main(String[] args) {
-        if (args.length != 5) {
-            System.err.println("args num wrong");
-            return;
+        if (args.length != 2) {
+            throw new IllegalArgumentException("missing arguments: " + args);
         }
 
-        String inputFolder = args[0];
-        String buildUrl = args[1];
-        String buildConsoleUrl = args[2];
-        String buildNumber = args[3];
-        String buildRegion = args[4];
+        String artifactsPath = args[0];
+        String buildNumber = args[1];
 
-        BackUpInstance.INSTANCE.init(buildNumber);
-        TaskExecutor taskExecutor =
-                new TaskExecutor(inputFolder, buildUrl, buildConsoleUrl, buildNumber, buildRegion);
+        Properties prop = new Properties();
+        File configFile = new File("onebox.properties");
+        try {
+            prop.load(new FileInputStream(configFile));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new IllegalStateException("cannot found properties");
+        }
+
+        Env env = new Env(
+                Integer.parseInt(buildNumber),
+                prop.getProperty("onebox.console"),
+                prop.getProperty("onebox.email.server"),
+                prop.getProperty("onebox.email.name"),
+                prop.getProperty("onebox.email.passed"),
+                prop.getProperty("onebox.email.from"),
+                prop.getProperty("onebox.email.recipients")
+        );
+
+        Reporter taskExecutor = new Reporter(artifactsPath, env);
         taskExecutor.run();
-        BackUpInstance.INSTANCE.shutdown();
 
     }
 }

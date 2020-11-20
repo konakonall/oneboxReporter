@@ -1,29 +1,27 @@
 package com.qcloud.ut_result_sender.meta;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LanguageStaticsInfo {
+public class UnitTestSummary implements Comparable<UnitTestSummary> {
+
     private long parseFailed = 0;
 
-    private String language = "";
     private String version = "";
     private long tests;
     private long errors;
     private long skipped;
     private long failures;
     private double time = 0.0;
-    private String state = "success";
-    private String xmlLink = "";
+    private String consoleUrl = "";
 
     private List<ErrorFailureCase> errorFailureCaseList = new ArrayList<>();
 
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
+    @Override
+    public int compareTo(UnitTestSummary o) {
+        return (double) (tests - errors - failures)/ tests - (double) (o.tests - o.errors - o.failures) / o.tests > 0 ?
+                -1 : 1;
     }
 
     public String getVersion() {
@@ -34,6 +32,13 @@ public class LanguageStaticsInfo {
         this.version = version;
     }
 
+    public String getConsoleUrl() {
+        return consoleUrl;
+    }
+
+    public void setConsoleUrl(String consoleUrl) {
+        this.consoleUrl = consoleUrl;
+    }
 
     public long getParseFailed() {
         return parseFailed;
@@ -105,7 +110,6 @@ public class LanguageStaticsInfo {
 
     public void addErrorFailureCase(ErrorFailureCase errorFailureCase) {
         this.errorFailureCaseList.add(errorFailureCase);
-        this.state = "error";
     }
 
     public List<ErrorFailureCase> getErrorFailureCaseList() {
@@ -113,14 +117,10 @@ public class LanguageStaticsInfo {
     }
 
     public String getState() {
-        return state;
+        return errors + failures > 0 ? "error" : "success";
     }
 
-    public String getXmlLink() {
-        return xmlLink;
-    }
-
-    public void setXmlLink(String xmlLink) {
-        this.xmlLink = xmlLink;
+    public String getSuccessRate() {
+        return Formatter.toRatePercent(tests - errors - failures, tests);
     }
 }
