@@ -178,12 +178,12 @@ public class Reporter {
             // 收件人的邮箱
             for (String emailSendTo : recipients) {
                 log.info("add email receiver {}", emailSendTo);
-                email.addTo(emailSendTo);
+                email.addTo(emailSendTo.trim());
             }
             // CC 收件人的邮箱
             for (String cc : ccs) {
                 log.info("add email cc {}", cc);
-                email.addCc(cc);
+                email.addCc(cc.trim());
             }
             // 发送人的邮箱
             email.setFrom(environment.emailName, environment.emailFrom);
