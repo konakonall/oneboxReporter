@@ -161,10 +161,11 @@ public class Reporter {
 
     private void sendEmail() {
 
-        String subject = "[OneBox] COS SDK 单元测试报告 " + Util.getCurrentDay();
+        String subject = "[OneBox] COS SDK 质量报告 " + Util.getCurrentDay();
         // 要发送的信息，由于使用了HtmlEmail，可以在邮件内容中使用HTML标签
         String content = getEmailContent();
         String[] recipients = environment.emailRecipients.split(",");
+        String[] ccs = environment.emailCCs.split(",");
 
         try {
             // 不要使用SimpleEmail,会出现乱码问题
@@ -178,6 +179,11 @@ public class Reporter {
             for (String emailSendTo : recipients) {
                 log.info("add email receiver {}", emailSendTo);
                 email.addTo(emailSendTo);
+            }
+            // CC 收件人的邮箱
+            for (String cc : ccs) {
+                log.info("add email cc {}", cc);
+                email.addCc(cc);
             }
             // 发送人的邮箱
             email.setFrom(environment.emailName, environment.emailFrom);

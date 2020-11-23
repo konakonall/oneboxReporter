@@ -36,7 +36,8 @@ public class App {
                 prop.getProperty("onebox.email.name"),
                 prop.getProperty("onebox.email.passed"),
                 prop.getProperty("onebox.email.from"),
-                prop.getProperty("onebox.email.recipients")
+                prop.getProperty("onebox.email.recipients"),
+                prop.getProperty("onebox.email.cc")
         );
 
         Reporter taskExecutor = new Reporter(artifactsPath, env);

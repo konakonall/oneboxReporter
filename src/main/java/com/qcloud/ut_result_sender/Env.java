@@ -16,13 +16,16 @@ public class Env {
 
     public final String emailRecipients;
 
+    public final String emailCCs;
+
     public Env(int buildNumber,
                 String consoleHost,
                String emailServer,
                String emailName,
                String emailPassed,
                String emailFrom,
-               String emailRecipients) {
+               String emailRecipients,
+               String emailCCs) {
         this.buildNumber = buildNumber;
         this.consoleHost = consoleHost;
         this.emailServer = emailServer;
@@ -30,6 +33,7 @@ public class Env {
         this.emailName = emailName;
         this.emailPassed = emailPassed;
         this.emailRecipients = emailRecipients;
+        this.emailCCs = emailCCs;
     }
 
     public String getConsoleUrl() {
