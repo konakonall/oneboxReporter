@@ -34,8 +34,6 @@ public class BackUpInstance {
         }
         COSCredentials cred = new BasicCOSCredentials(ak, sk);
         ClientConfig clientConfig = new ClientConfig(new Region(region));
-        clientConfig.setHttpProxyIp("web-proxy.oa.com");
-        clientConfig.setHttpProxyPort(8080);
         cosclient = new COSClient(cred, clientConfig);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
