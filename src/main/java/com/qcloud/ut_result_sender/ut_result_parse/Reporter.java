@@ -161,7 +161,7 @@ public class Reporter {
 
     private void sendEmail() {
 
-        String subject = "[OneBox] COS SDK 质量报告 " + Util.getCurrentDay();
+        String subject = "【OneBox】COS SDK 质量报告 " + Util.getCurrentDay();
         // 要发送的信息，由于使用了HtmlEmail，可以在邮件内容中使用HTML标签
         String content = getEmailContent();
         String[] recipients = environment.emailRecipients.split(",");

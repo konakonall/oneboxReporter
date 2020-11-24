@@ -151,27 +151,8 @@
 <div class="onebox" style="width: 960px; margin: auto;">
 	<div class="top">
 		<h1>COS SDK 统一自动测试  #${buildNumber} </h1>
-		<a class="build_url_info" href="${buildConsoleUrl}">pipeline 地址</a>
-		<p class="build_time">自动测试完成时间：${testTime}</p>
+		<p class="build_time">${testTime}</p>
 	</div>
-
-	<!-- <table class="total" cellpadding="0" cellspacing="0">
-		<tr>
-			<td>
-				<p class="total_name">总测试用例数</p>
-				<p class="total_number">${totalInfo.tests}</p>
-			</td>
-			<td>
-				<p class="total_name">failure的用例数</p>
-				<p class="total_number error">${totalInfo.failures}</p>
-			</td>
-			<td>
-				<p class="total_name">error的用例数</p>
-				<p class="total_number error">${totalInfo.errors}</p>
-			</td>
-
-		</tr>
-	</table> -->
 
 	<table class="box" cellpadding="0" cellspacing="0">
 		<caption>
@@ -207,8 +188,6 @@
 		</thead>
 		<tbody>
 			<#list utSummary as key, utItem>
-					<!--<tr class="bg_success">-->
-					<!--<tr class="bg_error">-->
 					<tr>
 						<td class="sdk_name">
 							<p>${key}</p>
