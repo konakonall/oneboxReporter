@@ -13,7 +13,7 @@ public class ParserFactory {
     static {
         parsers.put("Android", new GroupParser(
                 new ParseConfig<UnitTestSummary>("TEST-.*\\.xml", new JUnitParser()),
-                new ParseConfig<CodeCoverage>("report.xml", new JacocoParser())
+                new ParseConfig<CodeCoverage>("jacocoCreateNormalDebugCoverageReport.xml", new JacocoParser())
         ));
 
         parsers.put(".NET", new GroupParser(
