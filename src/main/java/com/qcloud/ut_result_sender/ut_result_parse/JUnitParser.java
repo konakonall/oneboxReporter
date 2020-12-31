@@ -42,23 +42,23 @@ public class JUnitParser implements Parser<UnitTestSummary> {
 
     private static void parseTestSuite(Element rootElement, UnitTestSummary summary) {
         if (rootElement.hasAttribute(tests_attr)) {
-            String testAttrStr = rootElement.getAttribute(tests_attr);
+            String testAttrStr = rootElement.getAttribute(tests_attr).replace(",","");
             summary.setTests(Long.parseLong(testAttrStr));
         }
         if (rootElement.hasAttribute(errors_attr)) {
-            String errorAttrStr = rootElement.getAttribute(errors_attr);
+            String errorAttrStr = rootElement.getAttribute(errors_attr).replace(",","");
             summary.setErrors(Long.parseLong(errorAttrStr));
         }
         if (rootElement.hasAttribute(skipped_attr)) {
-            String skippedAttrStr = rootElement.getAttribute(skipped_attr);
+            String skippedAttrStr = rootElement.getAttribute(skipped_attr).replace(",","");
             summary.setSkipped(Long.parseLong(skippedAttrStr));
         }
         if (rootElement.hasAttribute(failures_attr)) {
-            String failAttrStr = rootElement.getAttribute(failures_attr);
+            String failAttrStr = rootElement.getAttribute(failures_attr).replace(",","");
             summary.setFailures(Long.parseLong(failAttrStr));
         }
         if (rootElement.hasAttribute(time_attr)) {
-            String timeAttrStr = rootElement.getAttribute(time_attr);
+            String timeAttrStr = rootElement.getAttribute(time_attr).replace(",","");
             summary.setTime(Double.parseDouble(timeAttrStr));
         }
     }
