@@ -37,7 +37,8 @@ public class ParserFactory {
         ));
 
         parsers.put("Javascript", new GroupParser(
-                new ParseConfig<UnitTestSummary>("log.txt", new JSTestParser())
+                new ParseConfig<UnitTestSummary>("log.txt", new JSTestParser()),
+                new ParseConfig<CodeCoverage>("cobertura-coverage.xml", new CoberturaParser())
         ));
 
         parsers.put("Node.js", new GroupParser(
